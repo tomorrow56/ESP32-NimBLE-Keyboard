@@ -3,9 +3,12 @@
 #include "sdkconfig.h"
 #if defined(CONFIG_BT_ENABLED)
 
+#include "nimconfig.h"
+#if defined(CONFIG_BT_NIMBLE_ROLE_PERIPHERAL)
+
 #include "BleConnectionStatus.h"
-#include "BLEHIDDevice.h"
-#include "BLECharacteristic.h"
+#include "NimBLEHIDDevice.h"
+#include "NimBLECharacteristic.h"
 #include "Print.h"
 
 
@@ -90,15 +93,15 @@ class BleKeyboard : public Print
 {
 private:
   BleConnectionStatus* connectionStatus;
-  BLEHIDDevice* hid;
-  BLECharacteristic* inputKeyboard;
-  BLECharacteristic* outputKeyboard;
-  BLECharacteristic* inputMediaKeys;
+  NimBLEHIDDevice* hid;
+  NimBLECharacteristic* inputKeyboard;
+  NimBLECharacteristic* outputKeyboard;
+  NimBLECharacteristic* inputMediaKeys;
   KeyReport _keyReport;
   MediaKeyReport _mediaKeyReport;
   static void taskServer(void* pvParameter);
 public:
-  BleKeyboard(std::string deviceName = "ESP32 BLE Keyboard", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
+  BleKeyboard(std::string deviceName = "ESP32-Keyboard", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
   void begin(void);
   void end(void);
   void sendReport(KeyReport* keys);
@@ -117,8 +120,9 @@ public:
   std::string deviceManufacturer;
   std::string deviceName;
 protected:
-  virtual void onStarted(BLEServer *pServer) { };
+  virtual void onStarted(NimBLEServer *pServer) { };
 };
 
+#endif // CONFIG_BT_NIMBLE_ROLE_PERIPHERAL
 #endif // CONFIG_BT_ENABLED
 #endif // ESP32_BLE_KEYBOARD_H
