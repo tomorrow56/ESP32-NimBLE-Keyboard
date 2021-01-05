@@ -17,8 +17,8 @@ You might also be interested in:
  - [x] Compatible with Android
  - [x] Compatible with Windows
  - [x] Compatible with Linux
- - [ ] Compatible with MacOS X (Untested)
- - [ ] Compatible with iOS (Untested)
+ - [x] Compatible with MacOS X (not stable, some people have issues, doesn't work with old devices)
+ - [x] Compatible with iOS (not stable, some people have issues, doesn't work with old devices)
 
 ## Installation
 - (Make sure you can use the ESP32 with the Arduino IDE. [Instructions can be found here.](https://github.com/espressif/arduino-esp32#installation-instructions))
@@ -103,7 +103,7 @@ In addition to that you can send media keys (which is not possible with the USB 
 There is also Bluetooth specific information that you can set (optional):
 Instead of `BleKeyboard bleKeyboard;` you can do `BleKeyboard bleKeyboard("Bluetooth Device Name", "Bluetooth Device Manufacturer", 100);`.
 The third parameter is the initial battery level of your device. To adjust the battery level later on you can simply call e.g.  `bleKeyboard.setBatteryLevel(50)` (set battery level to 50%).
-By default the battery level will be set to 100%, the device name will be `ESP32 Bluetooth Mouse` and the manufacturer will be `Espressif`.
+By default the battery level will be set to 100%, the device name will be `ESP32 Bluetooth Keyboard` and the manufacturer will be `Espressif`.
 
 ## Credits
 
