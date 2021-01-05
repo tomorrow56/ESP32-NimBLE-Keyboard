@@ -435,6 +435,7 @@ void BleKeyboard::releaseAll(void)
 size_t BleKeyboard::write(uint8_t c)
 {
 	uint8_t p = press(c);  // Keydown
+	vTaskDelay(3);
 	release(c);            // Keyup
 	return p;              // just return the result of press() since release() almost always returns 1
 }
@@ -442,6 +443,7 @@ size_t BleKeyboard::write(uint8_t c)
 size_t BleKeyboard::write(const MediaKeyReport c)
 {
 	uint16_t p = press(c);  // Keydown
+	vTaskDelay(3);
 	release(c);            // Keyup
 	return p;              // just return the result of press() since release() almost always returns 1
 }
