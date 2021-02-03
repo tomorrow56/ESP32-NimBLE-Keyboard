@@ -148,7 +148,6 @@ void BleKeyboard::taskServer(void* pvParameter) {
   NimBLEAdvertising *pAdvertising = pServer->getAdvertising();
   pAdvertising->setAppearance(HID_KEYBOARD);
   pAdvertising->addServiceUUID(bleKeyboardInstance->hid->hidService()->getUUID());
-  pAdvertising->setScanResponse(false);
   pAdvertising->start();
   bleKeyboardInstance->hid->setBatteryLevel(bleKeyboardInstance->batteryLevel);
 
