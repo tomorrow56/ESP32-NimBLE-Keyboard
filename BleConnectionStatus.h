@@ -19,7 +19,6 @@ public:
   NimBLECharacteristic* inputKeyboard;
   NimBLECharacteristic* outputKeyboard;
   NimBLECharacteristic* inputMediaKeys;
-  NimBLEAdvertising *pAdvertising;
 };
 
 #endif // CONFIG_BT_NIMBLE_ROLE_PERIPHERAL

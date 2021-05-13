@@ -127,7 +127,7 @@ void BleKeyboard::taskServer(void* pvParameter) {
   bleKeyboardInstance->inputMediaKeys = bleKeyboardInstance->hid->inputReport(MEDIA_KEYS_ID);
   bleKeyboardInstance->connectionStatus->inputKeyboard = bleKeyboardInstance->inputKeyboard;
   bleKeyboardInstance->connectionStatus->outputKeyboard = bleKeyboardInstance->outputKeyboard;
-  bleKeyboardInstance->connectionStatus->inputMediaKeys = bleKeyboardInstance->inputMediaKeys;
+	bleKeyboardInstance->connectionStatus->inputMediaKeys = bleKeyboardInstance->inputMediaKeys;
 
   bleKeyboardInstance->outputKeyboard->setCallbacks(new KeyboardOutputCallbacks());
 
@@ -145,10 +145,10 @@ void BleKeyboard::taskServer(void* pvParameter) {
 
   bleKeyboardInstance->onStarted(pServer);
 
-  bleKeyboardInstance->connectionStatus->pAdvertising = pServer->getAdvertising();
-  bleKeyboardInstance->connectionStatus->pAdvertising->setAppearance(HID_KEYBOARD);
-  bleKeyboardInstance->connectionStatus->pAdvertising->addServiceUUID(bleKeyboardInstance->hid->hidService()->getUUID());
-  bleKeyboardInstance->connectionStatus->pAdvertising->start();
+  NimBLEAdvertising *pAdvertising = pServer->getAdvertising();
+  pAdvertising->setAppearance(HID_KEYBOARD);
+  pAdvertising->addServiceUUID(bleKeyboardInstance->hid->hidService()->getUUID());
+  pAdvertising->start();
   bleKeyboardInstance->hid->setBatteryLevel(bleKeyboardInstance->batteryLevel);
 
   ESP_LOGD(LOG_TAG, "Advertising started!");
