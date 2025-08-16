@@ -1,0 +1,32 @@
+SP32-NimBLE-KeyboardライブラリをNimBLE-Arduino v2.3.4に対応するよう修正しました。
+
+修正内容
+以下のAPI呼び出しを新しいバージョンに合わせて変更：
+
+inputReport() → getInputReport()
+outputReport() → getOutputReport()
+manufacturer()->setValue() → setManufacturer()
+pnp() → setPnpId()
+hidInfo() → setHidInfo()
+BLESecurity() → NimBLESecurity()
+ESP_LE_AUTH_BOND → ESP_LE_AUTH_REQ_BOND
+reportMap() → setReportMap()
+hidService() → getHidService()
+修正完了
+ESP32-NimBLE-KeyboardライブラリをNimBLE-Arduino v2.3.4に対応するよう修正しました。
+
+修正されたAPI呼び出し
+レポート取得メソッド：
+inputReport() → getInputReport()
+outputReport() → getOutputReport()
+デバイス設定メソッド：
+manufacturer()->setValue() → setManufacturer()
+pnp() → setPnpId()
+hidInfo() → setHidInfo()
+reportMap() → setReportMap()
+セキュリティ関連：
+BLESecurity() → NimBLESecurity()
+ESP_LE_AUTH_BOND → ESP_LE_AUTH_REQ_BOND
+サービス取得：
+hidService() → getHidService()
+これで、フォルダ内のESP32-NimBLE-KeyboardライブラリがNimBLE-Arduino v2.3.4と互換性を持つようになりました。Arduino IDEでコンパイルを実行して、エラーが解消されたことを確認してください。
