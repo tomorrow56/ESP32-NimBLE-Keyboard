@@ -106,6 +106,12 @@ void BleKeyboard::end(void)
 }
 
 bool BleKeyboard::isConnected(void) {
+  // NimBLE-Arduino v2.3.4対応: サーバーの接続数もチェック
+  NimBLEServer* pServer = NimBLEDevice::getServer();
+  if (pServer != nullptr && pServer->getConnectedCount() > 0) {
+    this->connectionStatus->connected = true;
+    return true;
+  }
   return this->connectionStatus->connected;
 }
 
@@ -122,32 +128,31 @@ void BleKeyboard::taskServer(void* pvParameter) {
   pServer->setCallbacks(bleKeyboardInstance->connectionStatus);
 
   bleKeyboardInstance->hid = new NimBLEHIDDevice(pServer);
-  bleKeyboardInstance->inputKeyboard = bleKeyboardInstance->hid->inputReport(KEYBOARD_ID); // <-- input REPORTID from report map
-  bleKeyboardInstance->outputKeyboard = bleKeyboardInstance->hid->outputReport(KEYBOARD_ID);
-  bleKeyboardInstance->inputMediaKeys = bleKeyboardInstance->hid->inputReport(MEDIA_KEYS_ID);
+  bleKeyboardInstance->inputKeyboard = bleKeyboardInstance->hid->getInputReport(KEYBOARD_ID); // <-- input REPORTID from report map
+  bleKeyboardInstance->outputKeyboard = bleKeyboardInstance->hid->getOutputReport(KEYBOARD_ID);
+  bleKeyboardInstance->inputMediaKeys = bleKeyboardInstance->hid->getInputReport(MEDIA_KEYS_ID);
   bleKeyboardInstance->connectionStatus->inputKeyboard = bleKeyboardInstance->inputKeyboard;
   bleKeyboardInstance->connectionStatus->outputKeyboard = bleKeyboardInstance->outputKeyboard;
 	bleKeyboardInstance->connectionStatus->inputMediaKeys = bleKeyboardInstance->inputMediaKeys;
 
   bleKeyboardInstance->outputKeyboard->setCallbacks(new KeyboardOutputCallbacks());
 
-  bleKeyboardInstance->hid->manufacturer()->setValue(bleKeyboardInstance->deviceManufacturer);
+  bleKeyboardInstance->hid->setManufacturer(bleKeyboardInstance->deviceManufacturer);
 
-  bleKeyboardInstance->hid->pnp(0x02, 0xe502, 0xa111, 0x0210);
-  bleKeyboardInstance->hid->hidInfo(0x00,0x01);
+  bleKeyboardInstance->hid->setPnp(0x02, 0xe502, 0xa111, 0x0210);
+  bleKeyboardInstance->hid->setHidInfo(0x00,0x01);
 
-  NimBLESecurity *pSecurity = new BLESecurity();
+  NimBLEDevice::setSecurityAuth(true, true, true);
+  NimBLEDevice::setSecurityPasskey(123456);
 
-  pSecurity->setAuthenticationMode(ESP_LE_AUTH_BOND);
-
-  bleKeyboardInstance->hid->reportMap((uint8_t*)_hidReportDescriptor, sizeof(_hidReportDescriptor));
+  bleKeyboardInstance->hid->setReportMap((uint8_t*)_hidReportDescriptor, sizeof(_hidReportDescriptor));
   bleKeyboardInstance->hid->startServices();
 
   bleKeyboardInstance->onStarted(pServer);
 
   NimBLEAdvertising *pAdvertising = pServer->getAdvertising();
   pAdvertising->setAppearance(HID_KEYBOARD);
-  pAdvertising->addServiceUUID(bleKeyboardInstance->hid->hidService()->getUUID());
+  pAdvertising->addServiceUUID(bleKeyboardInstance->hid->getHidService()->getUUID());
   pAdvertising->start();
   bleKeyboardInstance->hid->setBatteryLevel(bleKeyboardInstance->batteryLevel);
 
