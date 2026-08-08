@@ -10,6 +10,7 @@
 #include <NimBLECharacteristic.h>
 #include <NimBLEHIDDevice.h>
 #include <Print.h>
+#include <functional>
 
 
 const uint8_t KEY_LEFT_CTRL = 0x80;
